@@ -1,8 +1,8 @@
 import { configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {BookingItem} from "../../../interface.js";
+import {ReservationItem} from "../../../interface.js";
 
 type BookState = {
-    bookItems:BookingItem[]
+    bookItems:ReservationItem[]
 }
 
 const initialState:BookState={bookItems:[]}
@@ -11,10 +11,10 @@ export const bookSlice = createSlice({
     name:"book",
     initialState,
     reducers:{
-        addBooking: (state, action: PayloadAction<BookingItem>) => {
+        addBooking: (state, action: PayloadAction<ReservationItem>) => {
             console.log("Add success");
-            const { id } = action.payload;
-            const existingBookingIndex = state.bookItems.findIndex(item => item.id === id);
+            const { _id } = action.payload;
+            const existingBookingIndex = state.bookItems.findIndex(item => item._id === _id);
             if (existingBookingIndex !== -1) {
                 state.bookItems[existingBookingIndex] = action.payload;
             } else {
@@ -24,7 +24,7 @@ export const bookSlice = createSlice({
         ,
         removeBooking: (state,action:PayloadAction<string>)=>{
             const remainItem = state.bookItems.filter(obj =>{
-                return ((obj.id!=action.payload))
+                return ((obj._id!=action.payload))
             })
             state.bookItems = remainItem
         }

@@ -1,19 +1,14 @@
 "use client"
 import DateReserve from '@/components/DateReserve';
-import TextField from '@mui/material/TextField';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]/route';
 import getUserProfile from '@/libs/getUserProfile';
-import { useSearchParams } from 'next/navigation';
 import dayjs, { Dayjs } from 'dayjs';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import {AppDispatch} from "@/redux/store"
-import { ReservationItem } from '../../../interface';
-import {addBooking} from '@/redux/features/bookSlice';
+import { useEffect, useState } from 'react';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import getHospitals from '@/libs/getHospitals';
+import createdReservation from '@/libs/createdReservation';
 
 export default async function BookingPage() {
 
@@ -23,28 +18,13 @@ export default async function BookingPage() {
   if(!session||!session.user.token) return null
 
   const profile = await getUserProfile(session.user.token)
-  var createdAt = new Date(profile.data.createdAt)
 
-  //const urlParams = useSearchParams()
-  //const name = urlParams.get('Name-Lastname')
-  //const id = urlParams.get('Citizen-ID')
   const [bookingDate,setBookDate] = useState<Dayjs|null>(null)
   const [location,setLocation] = useState("")
-  const [id,setId] = useState("")
-  const [name,setName] = useState("")
 
-  const dispatch = useDispatch<AppDispatch>()
-  const makeBooking = () => {
-  if (name && id && bookingDate && location) {
-    const item: ReservationItem = {
-      _id : id,
-      user: name,
-      restaurant: id,
-      foodOrder : [],
-      apptDate: dayjs(bookingDate)?.format("YYYY/MM/DD")
-    };
-    console.log("Booking Item:", item);
-    dispatch(addBooking(item));
+  const makeReservation = () => {
+  if  ( bookingDate && location) {
+    createdReservation(profile.data._id,session.user.token,bookingDate,location);
     console.log("Booking dispatched successfully.");
   } else {
     console.error("Some required fields are missing. Booking not dispatched.");
@@ -67,10 +47,6 @@ export default async function BookingPage() {
             <td>Tel.</td>
             <td>{profile.data.tel}</td>
           </tr>
-          <tr>
-            <td>Member Since</td>
-            <td>{createdAt.toString()}</td>
-          </tr>
         </tbody>
       </table>
       <div className="text-xl font-medium mt-6">Restautant Reserve in the name of {profile.data.name}</div>
@@ -85,7 +61,7 @@ export default async function BookingPage() {
             onChange={(e)=>{setLocation(e.target.value)}}>
               {
               hospitalResponse.data.map((hospitalItem:any)=>(
-                <MenuItem value = {hospitalItem.name}>{hospitalItem.name}</MenuItem>
+                <MenuItem value = {hospitalItem._id}>{hospitalItem.name}</MenuItem>
             ))
               }
             </Select>
@@ -104,8 +80,8 @@ export default async function BookingPage() {
             <button
               type='button'
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-indigo-400"
-              onClick={makeBooking} name='Book Vaccine'>
-              Book Vaccine
+              onClick={makeReservation} name='Reserve'>
+              Reserve My Seat now!!!
             </button>
           </div>
         </form>
