@@ -36,6 +36,7 @@ export default function BookingPage() {
   const {data:session, status} = useSession()
 
   const makeReservation = async () => {
+    
     if (bookingDate && location && profile) {
       try {
         if(session) {
@@ -47,6 +48,10 @@ export default function BookingPage() {
         console.error("Failed to dispatch booking:", error);
       }
     } else {
+      if(!profile) {
+        alert('Please Login befor creating reservation')
+        return;
+      }
       console.error("Some required fields are missing. Booking not dispatched.");
     }
   };
