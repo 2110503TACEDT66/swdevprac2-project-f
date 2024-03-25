@@ -1,17 +1,14 @@
 'use client'
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { removeBooking } from '@/redux/features/bookSlice';
+import { Suspense, useEffect, useState } from 'react';
 import  getReservations  from '@/libs/getReservations';
-import  getUserProfile  from '@/libs/getUserProfile';
 import deleteReservation from '@/libs/deleteReservation';
+import LinearProgress from '@mui/material/LinearProgress';
 
-export default function BookingList() {
-    const dispatch = useDispatch();
+export default function BookingList({profile}:{profile:any}) {
+
     const { data: session, status } = useSession();
-    const [profile, setProfile] = useState<any>(null);
-    const [allReservation, setAllReservation] = useState<any[]>([]);
+    const [allReservation, setAllReservation] = useState<any>(null);
 
     useEffect(() => {
         if (status === 'authenticated' && session) {
@@ -21,13 +18,10 @@ export default function BookingList() {
 
     async function fetchData(session: any) {
         try {
-            const userProfile = await getUserProfile(session.user.token);
-            setProfile(userProfile);
             const reservations = await getReservations(session.user.token);
             setAllReservation(reservations.data);
         } catch (error) {
             console.error('Error fetching data:', error);
-            // Handle error appropriately
         }
     }
 
@@ -36,15 +30,17 @@ export default function BookingList() {
             'January', 'February', 'March', 'April', 'May', 'June', 'July',
             'August', 'September', 'October', 'November', 'December'
         ];
-
         const dateObj: Date = new Date(time);
         const day: string = ('0' + dateObj.getDate()).slice(-2);
         const monthIndex: number = dateObj.getMonth();
         const month: string = months[monthIndex];
         const year: number = dateObj.getFullYear();
+        const hour: string = ('0' + dateObj.getHours()).slice(-2);
+        const minute: string = ('0' + dateObj.getMinutes()).slice(-2);
+        return `${day} ${month} ${year} ${hour}:${minute}`;
+    }    
 
-        return `${day} ${month} ${year}`;
-    }
+    if(!allReservation){return <p>Loading ... <LinearProgress/></p>}
 
     return (
         <>

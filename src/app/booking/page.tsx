@@ -26,7 +26,6 @@ export default function BookingPage() {
         const userProfile = await getUserProfile(session.user.token);
         setProfile(userProfile);
       }
-      
       //}
     };
     fetchData();
@@ -37,11 +36,6 @@ export default function BookingPage() {
   const {data:session, status} = useSession()
 
   const makeReservation = async () => {
-    console.log("Making a booking...");
-    console.log("Name:", profile.data._id);
-    console.log("ID:",session? session.user.token: "Nah bro");
-    console.log("Booking Date:", bookingDate);
-    console.log("Location:", location);
     if (bookingDate && location && profile) {
       try {
         if(session) {
