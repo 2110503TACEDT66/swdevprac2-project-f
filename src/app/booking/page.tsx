@@ -8,40 +8,45 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import getHospitals from '@/libs/getHospitals';
 import createdReservation from '@/libs/createdReservation';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 
 export default function BookingPage() {
 
-  const [hospitalResponse, setHospitalResponse] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const [hospitalResponse, setHospitalResponse] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       console.log("finding");
       const hospitals = await getHospitals();
       setHospitalResponse(hospitals);
-      //const session = await getServerSession(authOptions);
-      if (session && session.user.token) {
+      /*const session = await getServerSession(authOptions);
+      if (session && session.user.token) {*/
+      if(session) {
         const userProfile = await getUserProfile(session.user.token);
         setProfile(userProfile);
       }
+      
+      //}
     };
     fetchData();
   }, []);
 
   const [bookingDate, setBookingDate] = useState(null);
   const [location, setLocation] = useState('');
-  const {data: session, status} = useSession()
+  const {data:session, status} = useSession()
 
   const makeReservation = async () => {
     console.log("Making a booking...");
     console.log("Name:", profile.data._id);
-    console.log("ID:", session.user.token);
+    console.log("ID:",session? session.user.token: "Nah bro");
     console.log("Booking Date:", bookingDate);
     console.log("Location:", location);
     if (bookingDate && location && profile) {
       try {
-        await createdReservation(location, session.user.token, bookingDate,profile.data._id);
+        if(session) {
+          await createdReservation(location, session.user.token, bookingDate,profile.data._id);
+        } 
         console.log("Booking dispatched successfully.");
         alert("Reservation booking complete")
       } catch (error) {
@@ -54,7 +59,7 @@ export default function BookingPage() {
 
   return (
     <main className="flex flex-col items-center pt-6 pl-6 w-full">
-      <div className="text-xl font-medium mt-6">{profile ? "Reserve seat in the name of "+ profile.data.name : "Please login to make reservation"}</div>
+      <div className="text-xl font-medium mt-6">{profile ? "Reserve seat in the name of "   + profile.data.name : "Please login to make reservation"}</div>
       <div className="w-full max-w-sm">
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 space-y-4 mt-4">
           <div>
@@ -98,6 +103,7 @@ export default function BookingPage() {
     </main>
   )
 }
+
 
 /*<table className='table-auto border-separate border-spacing-2 bg-gray-100'>
         <tbody>
