@@ -11,7 +11,7 @@ export default function Form({onDateChange}:{onDateChange:Function}){
     const [bookingDate,setBookDate] = useState<Dayjs|null>(null)
 
     return(
-        <div className="bg-state-100 rounded-lg space-x-5 space-y-2 flex felx-row justify-center">
+        <div className="bg-state-100 rounded-lg space-x-5 space-y-2 flex felx-row">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker className="bg-white" value={bookingDate} onChange={(value)=>{setBookDate(value);onDateChange(value);}}/>
             </LocalizationProvider>

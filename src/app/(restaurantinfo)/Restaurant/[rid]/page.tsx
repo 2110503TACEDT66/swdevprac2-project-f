@@ -45,11 +45,11 @@ export default async function RestaurantPage({params}:{params:{rid:string}}){
             <div className="grid grid-cols-3 gap-4">
                 {MenuResponse.date.map((RestaurantItem:any, index:number)=>(
                     <div key={index} className="bg-white p-4 rounded-lg shadow-md">
-                    <div className="aspect-w-16 aspect-h-9 mb-4 content-center">
+                    <div className="aspect-w-16 aspect-h-9 mb-4 content-center flex justify-center">
                         <Image src={RestaurantItem.image} alt="Product Picture" width={300} height={300} className="object-cover rounded-lg"/>
                     </div>
                     <div className="text-center">
-                    <h3 className="text-lg font-semibold">{RestaurantItem.name}</h3>
+                    <h3 className="text-lg font-semibold">{RestaurantItem.name} : {RestaurantItem.price} ฿</h3>
                     </div>
                     </div>
                 ))}

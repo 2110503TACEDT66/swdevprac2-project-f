@@ -75,7 +75,7 @@ export default function ReservationForm({profile}:{profile:any}) {
             <label className="block text-sm font-medium text-gray-700">
               Choose your reservation date
             </label>
-            <div className="mt-2">
+            <div className="mt-2 ">
               <DateReserve onDateChange={(value:any) => { setBookingDate(value) }} />
             </div>
           </div>

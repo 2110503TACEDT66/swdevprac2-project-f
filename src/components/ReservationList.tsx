@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import getRestaurants from '@/libs/getRestaurants';
 import DateReserve from './DateReserve';
 import  Dayjs  from 'dayjs';
+import getMenu from '@/libs/getMenu';
 
 export default function BookingList({profile}:{profile:any}) {
 
@@ -81,57 +82,54 @@ export default function BookingList({profile}:{profile:any}) {
 
             {allReservation.length > 0 ? (
                 allReservation.map((item: any) => (
-                    <table className="w-full divide-y divide-gray-200 rounded-lg overflow-hidden text-black flex">
-                        <tbody className="px-6 py-3 text-left text-m font-medium text-gray-500 uppercase tracking-wider">
-                            <tr>
-                                <td>Restaurant:</td>
-                                <td>{item.restaurant.name}</td>
+                    <table className="w-full divide-y divide-gray-200 rounded-lg overflow-hidden text-black">
+                        <tbody className="divide-y divide-gray-200">
+                            <tr className="text-left text-sm font-medium text-gray-600">
+                                <td className="px-6 py-3">Restaurant:</td>
+                                <td className="px-6 py-3">{item.restaurant.name}</td>
                             </tr>
-                            <tr>
-                                <td>Reservation Date:</td>
-                                <td>{formatDate(item.apptDate)}</td>
+                            <tr className="text-left text-sm font-medium text-gray-600">
+                                <td className="px-6 py-3">Reservation Date:</td>
+                                <td className="px-6 py-3">{formatDate(item.apptDate)}</td>
                             </tr>
-                            <tr>
-                                <td>Food Order.</td>
-                                <td>{item.foodOrder}</td>
+                            <tr className="text-left text-sm font-medium text-gray-600">
+                                <td className="px-6 py-3">Food Order:</td>
+                                <td className="px-6 py-3">{item.foodOrder}</td>
                             </tr>
-                            <tr>
-                                <td>Change reservation to:</td>
-                                <td><DateReserve onDateChange={(value:any) => { setBookingDate(value) }} /></td>
+                            <tr className="text-left text-sm font-medium text-gray-600">
+                                <td className="px-6 py-3">Change reservation to:</td>
+                                <td className="px-6 py-3"><DateReserve onDateChange={(value:any) => { setBookingDate(value) }} /></td>
                             </tr>
-                            <tr>
-                                <td>Change Restaurant to:</td>
-                                <td> <Select variant="standard" name="location" className="h-[em] w-[200px]" value={location}
-                                    onChange={(e)=>{setLocation(e.target.value);}}>
-                                    {RestaurantResponse?.data.map((RestaurantItem:any)=>(
-                                    <MenuItem value={RestaurantItem._id}>{RestaurantItem.name}</MenuItem>))}
+                            <tr className="text-left text-sm font-medium text-gray-600">
+                                <td className="px-6 py-3">Change Restaurant to:</td>
+                                <td className="px-6 py-3">
+                                    <Select variant="standard" name="location" className="h-[em] w-[200px]" value={location} onChange={(e)=>{setLocation(e.target.value);}}>
+                                        {RestaurantResponse?.data.map((RestaurantItem:any)=>(
+                                        <MenuItem value={RestaurantItem._id}>{RestaurantItem.name}</MenuItem>
+                                        ))}
                                     </Select>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Make reservation at:</td>
-                                <td>{formatDate(item.createdAt)}</td>
+                            <tr className="text-left text-sm font-medium text-gray-600">
+                                <td className="px-6 py-3">Make reservation at:</td>
+                                <td className="px-6 py-3">{formatDate(item.createdAt)}</td>
                             </tr>
                             <tr>
-                                <td>
-                            <button
-                                className="block rounded-md bg-red-600 hover:bg-orange-600 px-3 py-1 text-white shadow-sm"
-                                onClick={async () => {
+                                <td className="px-6 py-3">
+                                    <button className="block rounded-md bg-red-600 hover:bg-orange-600 px-3 py-1 text-white shadow-sm" onClick={async () => {
                                     await deleteReservation(item._id, session?.user.token || "");
                                     window.location.reload();
-                                }}>
-                                cancel reservation
-                            </button>
+                                    }}>
+                                    Cancel Reservation
+                                    </button>
                                 </td>
-                                <td>
-                            <button
-                                className="block rounded-md bg-green-600 hover:bg-green-800 px-3 py-1 text-white shadow-sm"
-                                onClick={async () => {
-                                    await updateReservation(item._id, session?.user.token || "",bookingDate,location);
+                                <td className="px-6 py-3">
+                                    <button className="block rounded-md bg-green-600 hover:bg-green-800 px-3 py-1 text-white shadow-sm" onClick={async () => {
+                                    await updateReservation(item._id, session?.user.token || "", bookingDate, location);
                                     window.location.reload();
-                                }}>
-                                update reservation
-                            </button>
+                                    }}>
+                                        Update Reservation
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
