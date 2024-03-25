@@ -20,11 +20,11 @@ export default function BookingPage() {
       console.log("finding");
       const hospitals = await getHospitals();
       setHospitalResponse(hospitals);
-      /*const session = await getServerSession(authOptions);
-      if (session && session.user.token) {*/
+      //const session = await getServerSession(authOptions);
+      if (session && session.user.token) {
         const userProfile = await getUserProfile(session.user.token);
         setProfile(userProfile);
-      //}*/
+      }
     };
     fetchData();
   }, []);
