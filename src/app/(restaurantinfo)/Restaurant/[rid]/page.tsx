@@ -4,10 +4,10 @@ import getMenu from '@/libs/getMenu';
 import Image from 'next/image';
 
 
-export default async function RestaurantPage({params}:{params:{hid:string}}){
+export default async function RestaurantPage({params}:{params:{rid:string}}){
 
-    const RestaurantDetail = await getRestaurant(params.hid)
-    const MenuResponse = await getMenu(params.hid)
+    const RestaurantDetail = await getRestaurant(params.rid)
+    const MenuResponse = await getMenu(params.rid)
     if(!MenuResponse) return (<p>Menu is Loading</p>)
 
     return(
