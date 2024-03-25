@@ -46,7 +46,10 @@ export default async function BookingList() {
                     </tbody>
                 </table>
             </div>
-            <div className="bg-slate-200 rounded-px mx-5 py-2 my-2 text-xl text-black">No Reservation</div>
+            {
+                <div className="bg-slate-200 rounded-px mx-5 py-2 my-2 text-xl text-black">No Reservation</div>
+            }
+            
         </>
     );
 }
