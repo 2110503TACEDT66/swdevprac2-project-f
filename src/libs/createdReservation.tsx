@@ -2,6 +2,7 @@ import { Dayjs } from "dayjs"
 
 
 export default async function createdReservation(id: string, token: string, apptDate: Dayjs, user: string) {
+    apptDate = apptDate.add(7, 'hour');
 
     const response = await fetch(`https://presentation-day-1-f.vercel.app/api/v1/restaurants/${id}/reservations`, {
         method: "POST",

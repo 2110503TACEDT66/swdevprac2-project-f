@@ -37,7 +37,10 @@ export default function BookingList({profile}:{profile:any}) {
             'January', 'February', 'March', 'April', 'May', 'June', 'July',
             'August', 'September', 'October', 'November', 'December'
         ];
-        const dateObj: Date = new Date(time);
+        let dateObj: Date = new Date(time);
+        dateObj.setHours(dateObj.getHours() - 7);
+    
+
         const day: string = ('0' + dateObj.getDate()).slice(-2);
         const monthIndex: number = dateObj.getMonth();
         const month: string = months[monthIndex];
