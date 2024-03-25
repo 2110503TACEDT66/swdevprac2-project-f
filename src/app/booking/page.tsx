@@ -51,8 +51,9 @@ export default function BookingPage() {
       if(!profile) {
         alert('Please Login befor creating reservation')
         return;
+      } else {
+        console.error("Some required fields are missing. Booking not dispatched.");
       }
-      console.error("Some required fields are missing. Booking not dispatched.");
     }
   };
 
