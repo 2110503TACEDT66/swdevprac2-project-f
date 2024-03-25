@@ -20,7 +20,7 @@ export default async function mybooking() {
 
     return (
         <main>
-            <Suspense fallback={<p>Loading ... <LinearProgress /></p>}>
+            <Suspense fallback={<p className='text-black text-xl text-center' >Loading ... <LinearProgress /></p>}>
                 <BookingList profile={profile}></BookingList>
             </Suspense>
         </main>

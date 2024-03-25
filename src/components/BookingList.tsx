@@ -4,26 +4,33 @@ import { Suspense, useEffect, useState } from 'react';
 import  getReservations  from '@/libs/getReservations';
 import deleteReservation from '@/libs/deleteReservation';
 import LinearProgress from '@mui/material/LinearProgress';
+import updateReservation from '@/libs/updateReservation';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import getRestaurants from '@/libs/getRestaurants';
+import DateReserve from './DateReserve';
+import  Dayjs  from 'dayjs';
 
 export default function BookingList({profile}:{profile:any}) {
 
     const { data: session, status } = useSession();
     const [allReservation, setAllReservation] = useState<any>(null);
 
-    useEffect(() => {
-        if (status === 'authenticated' && session) {
-            fetchData(session);
-        }
-    }, [status, session]);
+    const [RestaurantResponse, setRestaurantResponse] = useState<any>(null);
 
-    async function fetchData(session: any) {
-        try {
-            const reservations = await getReservations(session.user.token);
-            setAllReservation(reservations.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
+    useEffect(() => {
+        const fetchData = async () => {
+        console.log("finding");
+        const Restaurants = await getRestaurants();
+        setRestaurantResponse(Restaurants);
+        const reservations = await getReservations(session?.user.token || "");
+        setAllReservation(reservations.data);
+      };
+      fetchData();
+    }, []);
+  
+    const [bookingDate, setBookingDate] = useState(Dayjs);
+    const [location, setLocation] = useState('');
 
     function formatDate(time: Date | number): string {
         const months: string[] = [
@@ -86,22 +93,43 @@ export default function BookingList({profile}:{profile:any}) {
                                 <td>{item.foodOrder}</td>
                             </tr>
                             <tr>
-                                <td>Restaurant telephone:</td>
-                                <td>{item.restaurant.tel}</td>
+                                <td>Change reservation to:</td>
+                                <td><DateReserve onDateChange={(value:any) => { setBookingDate(value) }} /></td>
+                            </tr>
+                            <tr>
+                                <td>Change Restaurant to:</td>
+                                <td> <Select variant="standard" name="location" className="h-[em] w-[200px]" value={location}
+                                    onChange={(e)=>{setLocation(e.target.value);}}>
+                                    {RestaurantResponse?.data.map((RestaurantItem:any)=>(
+                                    <MenuItem value={RestaurantItem._id}>{RestaurantItem.name}</MenuItem>))}
+                                    </Select>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Make reservation at:</td>
                                 <td>{formatDate(item.createdAt)}</td>
                             </tr>
                             <tr>
+                                <td>
                             <button
-                                className="block rounded-md bg-sky-600 hover:bg-indigo-600 px-3 py-1 text-white shadow-sm"
+                                className="block rounded-md bg-red-600 hover:bg-orange-600 px-3 py-1 text-white shadow-sm"
                                 onClick={async () => {
-                                    await deleteReservation(item._id, session?.user.token || '');
+                                    await deleteReservation(item._id, session?.user.token || "");
                                     window.location.reload();
                                 }}>
                                 cancel reservation
                             </button>
+                                </td>
+                                <td>
+                            <button
+                                className="block rounded-md bg-green-600 hover:bg-green-800 px-3 py-1 text-white shadow-sm"
+                                onClick={async () => {
+                                    await updateReservation(item._id, session?.user.token || "",bookingDate,location);
+                                    window.location.reload();
+                                }}>
+                                update reservation
+                            </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

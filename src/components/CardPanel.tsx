@@ -2,31 +2,31 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import Card from "./Card";
 import Link from "next/link";
-import getHospitals from "@/libs/getHospitals";
+import getRestaurants from "@/libs/getRestaurants";
 
 export default async function CardPanel(){
 
-    const hospitalResponse = await getHospitals()
+    const RestaurantResponse = await getRestaurants()
 
-    if(!hospitalResponse) return (<p>Hospital is Loading</p>)
+    if(!RestaurantResponse) return (<p>Restaurant is Loading</p>)
 
     return(
     <main>
       <div style={{margin:"20px", display:"flex",flexDirection:"row",flexWrap:"wrap",justifyContent:"space-around",alignContent:"space-around"}}>
         {
-            hospitalResponse.data.map((hospitalItem:any)=>(
-                <Link href={`/hospital/${hospitalItem._id}`} className="w-1/5">
-                <Card hospitalName={hospitalItem.name} imgSrc={hospitalItem.image}/>
+            RestaurantResponse.data.map((RestaurantItem:any)=>(
+                <Link href={`/Restaurant/${RestaurantItem._id}`} className="w-1/5">
+                <Card RestaurantName={RestaurantItem.name} imgSrc={RestaurantItem.image}/>
                  </Link>
             ))
         }
       </div>
-      {/*<div className="text-xl font-medium text-black text-center pt-12 mt-6"> Hospital list: {hospitalList.size}</div>
+      {/*<div className="text-xl font-medium text-black text-center pt-12 mt-6"> Restaurant list: {RestaurantList.size}</div>
       <div>
-        {Array.from(hospitalList).map((hospitalMap, index) => {
-            const [[hospitalName, rating]] = Array.from(hospitalMap.entries());
-            return <div key={index} data-testid={hospitalName} className="text-black text-center mb-4" onClick={()=>dispatch({type:"remove", hospitalName:hospitalName,rating:rating})}>
-                {hospitalName} Rating: {rating}
+        {Array.from(RestaurantList).map((RestaurantMap, index) => {
+            const [[RestaurantName, rating]] = Array.from(RestaurantMap.entries());
+            return <div key={index} data-testid={RestaurantName} className="text-black text-center mb-4" onClick={()=>dispatch({type:"remove", RestaurantName:RestaurantName,rating:rating})}>
+                {RestaurantName} Rating: {rating}
                 </div>;
         })}
     </div>*/} 
