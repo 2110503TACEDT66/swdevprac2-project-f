@@ -1,6 +1,6 @@
 'use client'
 import { useSession } from 'next-auth/react';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import  getReservations  from '@/libs/getReservations';
 import deleteReservation from '@/libs/deleteReservation';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -10,9 +10,11 @@ import MenuItem from '@mui/material/MenuItem';
 import getRestaurants from '@/libs/getRestaurants';
 import DateReserve from './DateReserve';
 import  Dayjs  from 'dayjs';
-import getMenu from '@/libs/getMenu';
+import { useRouter } from 'next/navigation';
 
 export default function BookingList({profile}:{profile:any}) {
+
+    const router = useRouter()
 
     const { data: session, status } = useSession();
     const [allReservation, setAllReservation] = useState<any>(null);
@@ -95,6 +97,12 @@ export default function BookingList({profile}:{profile:any}) {
                             <tr className="text-left text-sm font-medium text-gray-600">
                                 <td className="px-6 py-3">Food Order:</td>
                                 <td className="px-6 py-3">{item.foodOrder}</td>
+                                <td className="px-6 py-3">
+                                    <button className="rounded-md bg-orange-600 hover:bg-yellow-300 px-3 py-1 text-white shadow-sm" 
+                                    onClick={()=>{router.push(`/Orderfood/${item._id}`)}}>
+                                        Order food
+                                    </button>
+                                </td>
                             </tr>
                             <tr className="text-left text-sm font-medium text-gray-600">
                                 <td className="px-6 py-3">Change reservation to:</td>

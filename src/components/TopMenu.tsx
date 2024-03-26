@@ -21,9 +21,9 @@ export default async function TopMenu(){
                 </Link>
             }
             <div className='flex items-center h-full px-2 text-cyan-600 text-sm'>
-                <TopMenuItem title='My Reservation' pageRef='/mybooking'/>
+                <TopMenuItem title='My Reservation' pageRef='/myreservation'/>
             </div>
-            <TopMenuItem title='Reservation' pageRef='/booking'/>
+            <TopMenuItem title='Reservation' pageRef='/reservation'/>
             <Link href="/">
             <Image src='/img/logo.jpg' className={styles.logoimg} alt='logo' width={0} height={0} sizes='100vh'/>
             </Link>
