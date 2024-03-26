@@ -1,46 +1,79 @@
-
+'use client'
 import getRestaurant from '@/libs/getRestaurant';
 import getMenu from '@/libs/getMenu';
 import Image from 'next/image';
 import getReservation from '@/libs/getReservation';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { LinearProgress } from '@mui/material';
-import { getServerSession } from 'next-auth';
+import NumberInput from '@/components/NumberInput';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import orderFood from '@/libs/orderFood';
 
 
-export default async function Foodorder({params}:{params:{rid:string}}){
+export default function Foodorder({params}:{params:{rid:string}}){
+    const { data: session, status } = useSession();
+    const [amount, setAmount] = useState(null);
+    const [RestaurantDetail, setRestaurantDetail] = useState<any>(null);
+    const [MenuResponse, setMenuResponse] = useState<any>(null);
+    const [reservation, setreservation] = useState<any>(null);
 
-    const session = await getServerSession(authOptions);
-    let MenuResponse = null
-    let RestaurantDetail = null
+    useEffect(() => {
+        const fetchData = async () => {
+        console.log("finding");
+        if (session) {
+            const reservation = await getReservation(params.rid,session.user.token)
+            setreservation(reservation)
+            const restaurantID = reservation.data.restaurant
+            const restaurant = await getRestaurant(restaurantID._id)
+            setRestaurantDetail(restaurant)
+            const menu= await getMenu(restaurant.data._id)
+            setMenuResponse(menu)
+        } else {
+            return  <p className='text-black text-xl text-center'>Please go back and login ... <LinearProgress /></p>;
+        }
+      };
+      fetchData();
+    }, []);
 
-    if (session) {
-        const ReservationDetail = await getReservation(params.rid,session.user.token)
-        const restaurantID = ReservationDetail.data.restaurant
-        RestaurantDetail = await getRestaurant(restaurantID._id)
-        MenuResponse = await getMenu(RestaurantDetail.data._id)
-    } else {
-        
-        return  <p className='text-black text-xl text-center'>Please go back and login ... <LinearProgress /></p>;
+    let food: any[] = [];
+
+    function order(){
+        for (let i = 0; i < food.length; i++) {
+            console.log(food[i][1]);
+            console.log(food[i][0]);
+            for(let x=0;x<food[i][1];x++){
+                orderFood(reservation.data.id,session?session.user.token:"",food[i][0])
+            }      
+        }
+        return alert("success");
     }
   
-    if(!MenuResponse) return (<p>Menu is Loading</p>)
+    if(!MenuResponse||!RestaurantDetail) return (<p className='text-black text-xl text-center'>Menu is Loading ... <LinearProgress /></p>)
 
     return(
         <main className="text-center p-5 text-black">
             <h1 className="text-lg font-medium">{RestaurantDetail.data.name}</h1>
             <div className="grid grid-cols-3 gap-4">
-                {MenuResponse.date.map((RestaurantItem:any, index:number)=>(
+                {
+                MenuResponse.data.map((item:any, index:number)=>(
                     <div key={index} className="bg-white p-4 rounded-lg shadow-md">
                     <div className="aspect-w-16 aspect-h-9 mb-4 content-center flex justify-center">
-                        <Image src={RestaurantItem.image} alt="Product Picture" width={300} height={300} className="object-cover rounded-lg"/>
+                        <Image src={item.image} alt="Product Picture" width={300} height={300} className="object-cover rounded-lg"/>
                     </div>
                     <div className="text-center">
-                    <h3 className="text-lg font-semibold">{RestaurantItem.name} : {RestaurantItem.price} ฿</h3>
+                    <h3 className="text-lg font-semibold">{item.name} : {item.price} ฿</h3>
+                    <NumberInput onAmountChange={(value:any) => {
+                        setAmount(value);console.log(value);
+                        food[index]=[item._id,value]}}/>
                     </div>
                     </div>
-                ))}
+                ))
+                }
             </div>
+            <button className="rounded-md bg-orange-600 hover:bg-yellow-300 px-3 py-1 text-white shadow-sm" 
+                    onClick={order}>
+                        Order food now!!!
+                </button>
         </main>
     )
 }
