@@ -1,6 +1,6 @@
 export default async function deleteOrder(id: string, token: string, food: string) {
     const response = await fetch(`https://presentation-day-1-f.vercel.app/api/v1/reservations/${id}/${food}`, {
-        method: "POST",
+        method: "DELETE",
         headers: {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json" 

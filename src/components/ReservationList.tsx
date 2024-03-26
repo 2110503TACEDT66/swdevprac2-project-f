@@ -58,6 +58,7 @@ export default function BookingList({profile}:{profile:any}) {
 
     if(!allReservation){return <p>Loading ... <LinearProgress/></p>}
 
+
     return (
         <>
             {profile && (
@@ -89,6 +90,10 @@ export default function BookingList({profile}:{profile:any}) {
                 allReservation.map((item: any) => (
                     <table className="w-full divide-y divide-gray-200 rounded-lg overflow-hidden text-black">
                         <tbody className="divide-y divide-gray-200">
+                        <tr className="text-left text-sm font-medium text-gray-600">
+                                <td className="px-6 py-3">Name:</td>
+                                <td className="px-6 py-3">{profile.data.name}</td>
+                            </tr>
                             <tr className="text-left text-sm font-medium text-gray-600">
                                 <td className="px-6 py-3">Restaurant:</td>
                                 <td className="px-6 py-3">{item.restaurant.name}</td>
@@ -98,12 +103,12 @@ export default function BookingList({profile}:{profile:any}) {
                                 <td className="px-6 py-3">{formatDate(item.apptDate)}</td>
                             </tr>
                             <tr className="text-left text-sm font-medium text-gray-600">
-                                <td className="px-6 py-3">Food Order:</td>
-                                <td className="px-6 py-3">{item.foodOrder}</td>
+                                <td className="px-6 py-3">Food Order count:</td>
+                                <td className="px-6 py-3">{item.foodOrder.length}</td>
                                 <td className="px-6 py-3">
                                     <button className="rounded-md bg-orange-600 hover:bg-yellow-300 px-3 py-1 text-white shadow-sm" 
                                     onClick={()=>{router.push(`/Orderfood/${item._id}`)}}>
-                                        Order food
+                                        Click here to edit order
                                     </button>
                                 </td>
                             </tr>
