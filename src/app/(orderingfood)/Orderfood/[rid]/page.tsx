@@ -45,7 +45,7 @@ export default function Foodorder({params}:{params:{rid:string}}){
                 orderFood(reservation.data.id,session?session.user.token:"",food[i][0])
             }      
         }
-        return alert("success");
+       return alert("success");
     }
   
     if(!MenuResponse||!RestaurantDetail) return (<p className='text-black text-xl text-center'>Menu is Loading ... <LinearProgress /></p>)
@@ -62,18 +62,15 @@ export default function Foodorder({params}:{params:{rid:string}}){
                     </div>
                     <div className="text-center">
                     <h3 className="text-lg font-semibold">{item.name} : {item.price} ฿</h3>
-                    <NumberInput onAmountChange={(value:any) => {
-                        setAmount(value);console.log(value);
-                        food[index]=[item._id,value]}}/>
+                    <button className="rounded-md bg-orange-600 hover:bg-yellow-300 px-3 py-1 text-white shadow-sm" 
+                    onClick={()=>orderFood(reservation.data.id,session?session.user.token:"",item._id)}>
+                        Click here to add order
+                    </button>
                     </div>
                     </div>
                 ))
                 }
             </div>
-            <button className="rounded-md bg-orange-600 hover:bg-yellow-300 px-3 py-1 text-white shadow-sm" 
-                    onClick={order}>
-                        Order food now!!!
-                </button>
         </main>
     )
 }
