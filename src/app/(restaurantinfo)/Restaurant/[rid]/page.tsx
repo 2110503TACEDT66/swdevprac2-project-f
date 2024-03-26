@@ -43,7 +43,6 @@ export default async function RestaurantPage({params}:{params:{rid:string}}){
                 </tbody>
             </table>
             </div>
-            <InteractiveCard>
             <div className="grid grid-cols-3 gap-4">
                 {MenuResponse.data.map((RestaurantItem:any, index:number)=>(
                     <div key={index} className="bg-white p-4 rounded-lg shadow-md">
@@ -56,7 +55,6 @@ export default async function RestaurantPage({params}:{params:{rid:string}}){
                     </div>
                 ))}
             </div>
-            </InteractiveCard>
         </main>
     )
 }
