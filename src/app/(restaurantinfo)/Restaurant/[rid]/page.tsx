@@ -43,7 +43,7 @@ export default async function RestaurantPage({params}:{params:{rid:string}}){
             </table>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                {MenuResponse.date.map((RestaurantItem:any, index:number)=>(
+                {MenuResponse.data.map((RestaurantItem:any, index:number)=>(
                     <div key={index} className="bg-white p-4 rounded-lg shadow-md">
                     <div className="aspect-w-16 aspect-h-9 mb-4 content-center flex justify-center">
                         <Image src={RestaurantItem.image} alt="Product Picture" width={300} height={300} className="object-cover rounded-lg"/>
