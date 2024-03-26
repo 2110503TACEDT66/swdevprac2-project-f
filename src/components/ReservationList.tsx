@@ -92,7 +92,7 @@ export default function BookingList({profile}:{profile:any}) {
                         <tbody className="divide-y divide-gray-200">
                         <tr className="text-left text-sm font-medium text-gray-600">
                                 <td className="px-6 py-3">Name:</td>
-                                <td className="px-6 py-3">{profile.data.name}</td>
+                                <td className="px-6 py-3">{session?.user.name}</td>
                             </tr>
                             <tr className="text-left text-sm font-medium text-gray-600">
                                 <td className="px-6 py-3">Restaurant:</td>
