@@ -1,5 +1,3 @@
-
-
 export default async function orderFood(id: string, token: string, food: string) {
 
     const response = await fetch(`https://presentation-day-1-f.vercel.app/api/v1/reservations/${id}`, {

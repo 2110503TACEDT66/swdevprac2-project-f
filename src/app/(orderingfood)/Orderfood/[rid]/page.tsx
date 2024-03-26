@@ -11,7 +11,6 @@ import orderFood from '@/libs/orderFood';
 
 export default function Foodorder({params}:{params:{rid:string}}){
     const { data: session, status } = useSession();
-    const [amount, setAmount] = useState(null);
     const [RestaurantDetail, setRestaurantDetail] = useState<any>(null);
     const [MenuResponse, setMenuResponse] = useState<any>(null);
     const [reservation, setreservation] = useState<any>(null);
@@ -34,19 +33,18 @@ export default function Foodorder({params}:{params:{rid:string}}){
       fetchData();
     }, []);
 
-    let food: any[] = [];
-
-    function order(){
-        for (let i = 0; i < food.length; i++) {
-            console.log(food[i][1]);
-            console.log(food[i][0]);
-            for(let x=0;x<food[i][1];x++){
-                orderFood(reservation.data.id,session?session.user.token:"",food[i][0])
-            }      
-        }
-       return alert("success");
+    const handleOnClick = (item:any) => {
+        const res = orderFood(reservation.data._id,session?session.user.token:"",item._id)
+        res.then(result => {
+            if(result.success) {
+                alert("order successfully")
+            } else {
+                alert("order failed")
+            }
+        })
     }
-  
+
+    
     if(!MenuResponse||!RestaurantDetail) return (<p className='text-black text-xl text-center'>Menu is Loading ... <LinearProgress /></p>)
 
     return(
@@ -62,7 +60,7 @@ export default function Foodorder({params}:{params:{rid:string}}){
                     <div className="text-center">
                     <h3 className="text-lg font-semibold">{item.name} : {item.price} ฿</h3>
                     <button className="rounded-md bg-orange-600 hover:bg-yellow-300 px-3 py-1 text-white shadow-sm" 
-                    onClick={()=>orderFood(reservation.data._id,session?session.user.token:"",item._id)}>
+                    onClick={()=>handleOnClick(item)}>
                         Click here to add order
                     </button>
                     </div>
