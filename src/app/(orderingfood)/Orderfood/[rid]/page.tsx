@@ -4,7 +4,6 @@ import getMenu from '@/libs/getMenu';
 import Image from 'next/image';
 import getReservation from '@/libs/getReservation';
 import { LinearProgress } from '@mui/material';
-import NumberInput from '@/components/NumberInput';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import orderFood from '@/libs/orderFood';
@@ -63,7 +62,7 @@ export default function Foodorder({params}:{params:{rid:string}}){
                     <div className="text-center">
                     <h3 className="text-lg font-semibold">{item.name} : {item.price} ฿</h3>
                     <button className="rounded-md bg-orange-600 hover:bg-yellow-300 px-3 py-1 text-white shadow-sm" 
-                    onClick={()=>orderFood(reservation.data.id,session?session.user.token:"",item._id)}>
+                    onClick={()=>orderFood(reservation.data._id,session?session.user.token:"",item._id)}>
                         Click here to add order
                     </button>
                     </div>
