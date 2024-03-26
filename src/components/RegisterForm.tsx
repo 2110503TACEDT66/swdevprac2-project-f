@@ -23,7 +23,7 @@ export default function RegisterForm(reRoute:any) {
     return (
         <div className="flex justify-center items-center h-screen">
             <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <h2 className="text-2xl mb-6 text-center">Registration Form</h2>
+                <h2 className="text-2xl mb-6 text-center text-black">Registration Form</h2>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="name" className="block text-gray-700">Name:</label>
