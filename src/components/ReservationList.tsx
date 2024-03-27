@@ -22,7 +22,6 @@ export default function BookingList({profile}:{profile:any}) {
     const [allReservation, setAllReservation] = useState<any>(null);
 
     const [RestaurantResponse, setRestaurantResponse] = useState<any>(null);
-    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,10 +89,6 @@ export default function BookingList({profile}:{profile:any}) {
                 allReservation.map((item: any) => (
                     <table className="w-full divide-y divide-gray-200 rounded-lg overflow-hidden text-black">
                         <tbody className="divide-y divide-gray-200">
-                        <tr className="text-left text-sm font-medium text-gray-600">
-                                <td className="px-6 py-3">Name:</td>
-                                <td className="px-6 py-3">{session?.user.name}</td>
-                            </tr>
                             <tr className="text-left text-sm font-medium text-gray-600">
                                 <td className="px-6 py-3">Restaurant:</td>
                                 <td className="px-6 py-3">{item.restaurant.name}</td>
